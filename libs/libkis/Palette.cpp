@@ -225,3 +225,11 @@ KoColorSetSP Palette::colorSet()
 {
     return d->palette;
 }
+
+ManagedColor *Palette::colorForEntry(Swatch entry)
+{
+    if (!d->palette) return Q_NULLPTR;
+    ManagedColor *color = new ManagedColor(entry.color());
+    return color;
+    //d->palette->add(entry.kisSwatch(), groupName);
+}
