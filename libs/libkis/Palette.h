@@ -164,6 +164,8 @@ public:
      */
     bool save();
 
+    ManagedColor *colorForEntry(Swatch entry);
+
 private:
     friend class PaletteView;
     struct Private;

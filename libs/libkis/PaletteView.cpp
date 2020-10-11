@@ -36,10 +36,16 @@ PaletteView::PaletteView(QWidget *parent)
     this->layout()->addWidget(d->widget);
 
     //forward signals.
-    connect(d->widget, SIGNAL(entrySelected(KisSwatch)),
-                 this, SLOT(fgSelected(KisSwatch)));
-    connect(d->widget, SIGNAL(entrySelectedBackGround(KisSwatch)),
-            this, SLOT(bgSelected(KisSwatch)));
+//    connect(d->widget, SIGNAL(entrySelected(KisSwatch)),
+//                 this, SLOT(fgSelected(KisSwatch)));
+//    connect(d->widget, SIGNAL(entrySelectedBackGround(KisSwatch)),
+//            this, SLOT(bgSelected(KisSwatch)));
+    connect(d->widget, SIGNAL(sigColorSelected(const KoColor &)),
+            this, SLOT(colorSelected(const KoColor &)));
+
+    connect(d->widget, SIGNAL(sigIndexSelected(const QModelIndex &)),
+            this, SLOT(colorSelectedEntry(const QModelIndex &)));
+
 }
 
 PaletteView::~PaletteView()
@@ -90,4 +96,14 @@ void PaletteView::fgSelected(KisSwatch swatch)
 void PaletteView::bgSelected(KisSwatch swatch)
 {
     emit entrySelectedBackGround(Swatch(swatch));
+}
+
+void PaletteView::colorSelected(const KoColor & color)
+{
+    emit entryColorSelected(color);
+}
+
+void PaletteView::colorSelectedEntry(const QModelIndex & index)
+{
+    emit entryColorSelectedEntry(index);
 }
