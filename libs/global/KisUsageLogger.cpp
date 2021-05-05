@@ -25,6 +25,7 @@
 #include <QStandardPaths>
 #include <QFile>
 #include <QFileInfo>
+#include <QDir>
 #include <QDesktopWidget>
 #include <QClipboard>
 #include <QThread>
@@ -48,6 +49,10 @@ struct KisUsageLogger::Private {
 KisUsageLogger::KisUsageLogger()
     : d(new Private)
 {
+
+    if (!QFileInfo(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)).exists()) {
+        QDir().mkpath(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation));
+    }
     d->logFile.setFileName(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/krita.log");
     d->sysInfoFile.setFileName(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/krita-sysinfo.log");
 
