@@ -546,7 +546,6 @@ QByteArray Node::pixelData(int x, int y, int w, int h) const
     QByteArray ba;
 
     if (!d->node) return ba;
-
     KisPaintDeviceSP dev = d->node->paintDevice();
     if (!dev) return ba;
 
@@ -600,6 +599,9 @@ QByteArray Node::projectionPixelData(int x, int y, int w, int h) const
 bool Node::setPixelData(QByteArray value, int x, int y, int w, int h)
 {
     if (!d->node) return false;
+    if(!d->node->paintDevice() && dynamic_cast<KisTransparencyMask*>(this->node().data()) != 0){
+        dynamic_cast<KisTransparencyMask*>(this->node().data())->setSelection(new KisSelection());
+    }
     KisPaintDeviceSP dev = d->node->paintDevice();
     if (!dev) return false;
     if (value.length() <  w * h * (int)dev->colorSpace()->pixelSize()) {
@@ -932,4 +934,31 @@ void Node::paintPath(const QPainterPath &path, const QString strokeStyle, const 
 
     KisFigurePaintingToolHelper helper = PaintingResources::createHelper(d->image, node(), strokeStyle, fillStyle);
     helper.paintPainterPath(path);
+}
+void Node::refreshNode()
+{
+    if (image() == 0 || node() == 0) return;
+
+    image()->refreshGraphAsync(node(), KisImage::NoFilthyUpdate);;
+}
+
+void Node::flattenNode() {
+
+
+    KisNodeSP source = node();
+
+    if (image() == 0 || node() == 0) return;
+
+    // this precondition must be checked at higher level
+    KIS_SAFE_ASSERT_RECOVER_RETURN(source->isEditable(false));
+
+    KisLayer *srcLayer = qobject_cast<KisLayer *>(source.data());
+    if (srcLayer && (srcLayer->inherits("KisGroupLayer") || srcLayer->layerStyle() || srcLayer->childCount() > 0)) {
+        image()->flattenLayer(srcLayer);
+        image()->waitForDone();
+        return;
+    }
+
+    KisLayerUtils::convertToPaintLayer(image(), source);
+    image()->waitForDone();
 }

@@ -12,6 +12,7 @@
 
 #include "kritalibkis_export.h"
 #include "libkis.h"
+#include "kis_layer_utils.h"
 
 #include "PaintingResources.h"
 
@@ -689,6 +690,17 @@ public Q_SLOTS:
      * </ul>
      */
     QString paintAbility();
+
+    /**
+    * Starts a asynchronous recomposition of the node
+    */
+    void refreshNode();
+
+    /**
+    * fattens a node
+    */
+    void flattenNode();
+
 
 private:
 
