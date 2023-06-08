@@ -42,7 +42,10 @@ cmake-build-release-mingw/
 cmake-build-release-mingw64/
 
 .vscode/
+<<<<<<< HEAD
 CMakeUserPresets.json
+=======
+>>>>>>> 09cd03839c (Add a ci-script for building Krita on Windows)
 
 _build
 _install
