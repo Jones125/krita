@@ -23,7 +23,18 @@
 
 #include <kis_icon_utils.h>
 
+<<<<<<< HEAD
 #include <QtGui/private/qkeymapper_p.h>
+=======
+#ifdef Q_OS_WIN
+#include <config-request-possible-keys.h>
+
+#ifdef HAVE_REQUEST_POSSIBLE_KEYS
+#include <QtPlatformHeaders/QWindowsWindowFunctions>
+#endif
+
+#endif /* Q_OS_WIN */
+>>>>>>> dd6ce91bcc (Fix shortcuts editor to handle Ctrl+Alt-based keys on Windows)
 
 
 uint qHash(const QKeySequence &seq)
@@ -880,6 +891,7 @@ void KKeySequenceButton::keyPressEvent(QKeyEvent *e)
 
         // We now have a valid key press.
         if (keyQt) {
+<<<<<<< HEAD
             /**
              * Here is the trap, which is different on every OS. On Windows, Qt
              * has incomprehensible rules on translating AltGr-related key
@@ -905,6 +917,28 @@ void KKeySequenceButton::keyPressEvent(QKeyEvent *e)
                  */
                 keyQt = vec.first();
             } else if ((keyQt == Qt::Key_Backtab) && (d->modifierKeys & Qt::SHIFT)) {
+=======
+#if defined Q_OS_WIN && defined HAVE_REQUEST_POSSIBLE_KEYS
+            if (d->modifierKeys == (Qt::CTRL | Qt::ALT)) {
+                /**
+                 * We are falling down into AltGr trap on Widnows. Qt has incomprehensible
+                 * rules on translating AltGr-related key sequences into shortcuts, so
+                 * let's just ask Qt itself what it expects to receive as a shortcut :)
+                 */
+
+                const QList<int> vec = QWindowsWindowFunctions::requestPossibleKeys(e);
+                if (!vec.isEmpty()) {
+                    /**
+                     * Take the first element, which is usually the shortcut form the latin
+                     * layout of the keyboard
+                     */
+                    keyQt = vec.first();
+                }
+            } else
+#endif /* defined Q_OS_WIN && defined HAVE_REQUEST_POSSIBLE_KEYS */
+
+            if ((keyQt == Qt::Key_Backtab) && (d->modifierKeys & Qt::SHIFT)) {
+>>>>>>> dd6ce91bcc (Fix shortcuts editor to handle Ctrl+Alt-based keys on Windows)
                 keyQt = Qt::Key_Tab | d->modifierKeys;
             } else if (isShiftAsModifierAllowed(keyQt)) {
                 keyQt |= d->modifierKeys;
