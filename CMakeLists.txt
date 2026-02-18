@@ -131,13 +131,13 @@ endif()
 #######################
 ######################
 if (BUILD_WITH_QT6)
-set(KRITA_VERSION_STRING "6.0.2")
+set(KRITA_VERSION_STRING "6.0.0-beta2")
 set(KRITA_STABLE_VERSION_MAJOR 6)
 set(KRITA_STABLE_VERSION_MINOR 0)
 else()
 # define common versions of Krita applications, used to generate kritaversion.h
 # update these version for every release:
-set(KRITA_VERSION_STRING "5.3.2")
+set(KRITA_VERSION_STRING "5.3.0-beta2")
 # Major version: 3 for 3.x, 4 for 4.x, etc.
 set(KRITA_STABLE_VERSION_MAJOR 5)
 # Minor version: 0 for 4.0, 1 for 4.1, etc.
@@ -145,17 +145,17 @@ set(KRITA_STABLE_VERSION_MINOR 3)
 endif()
 
 # Bugfix release version, or 0 for before the first stable release
-set(KRITA_VERSION_RELEASE 2)
+set(KRITA_VERSION_RELEASE 0)
 # the 4th digit, really only used for the Windows installer:
 # - [Pre-]Alpha: Starts from 0, increment 1 per release
 # - Beta: Starts from 50, increment 1 per release
 # - Stable: Set to 100, bump to 101 if emergency update is needed
-set(KRITA_VERSION_REVISION 50)
+set(KRITA_VERSION_REVISION 51)
 # Uncomment the following if this is currently in the "stable" branch.
 # Do not uncomment for master branch.
 #set(KRITA_STABLE_BRANCH 1)
 #set(KRITA_ALPHA 1) # uncomment only for Alpha
-#set(KRITA_BETA 1) # uncomment only for Beta
+set(KRITA_BETA 1) # uncomment only for Beta
 #set(KRITA_RC 1) # uncomment only for RC
 
 if(NOT DEFINED KRITA_ALPHA AND NOT DEFINED KRITA_BETA AND NOT DEFINED KRITA_RC)
@@ -354,23 +354,6 @@ endif()
 
 add_feature_info("ASAN address sanitizer" ADDRESS_SANITIZER_ENABLED "crash Krita if it violates address access rules (-DECM_ENABLE_SANITIZERS=address)")
 
-# We don't want people to accidentally build unstable Krita versions if they
-# didn't mean to do so. This serves as an extra confirmation. You will get
-# errors during the configure step if you enable an unstable option.
-set(ALLOW_UNSTABLE "" CACHE STRING
-    "Semicolon-separated set of features that make Krita unstable, but you want to build with them anyway")
-string(TOUPPER "${ALLOW_UNSTABLE}" ALLOW_UNSTABLE)
-add_feature_info("Unstable features allowed" ON "${ALLOW_UNSTABLE}")
-
-if(BUILD_WITH_QT6 AND NOT "QT6" IN_LIST ALLOW_UNSTABLE)
-    message(FATAL_ERROR
-        "Building Krita with Qt6 is not yet production-ready. Please don't "
-        "package this and ship it as a stable version of the software.\n"
-        "If you want to continue regardless, pass:\n"
-        "    -DALLOW_UNSTABLE=QT6"
-    )
-endif()
-
 # Branding. Available options: default, Beta, Plus, Next. Can be set from command line
 if ("${BRANDING}" STREQUAL "")
     if (DEFINED KRITA_STABLE)
@@ -385,12 +368,6 @@ if ("${BRANDING}" STREQUAL "")
         set(BRANDING "Next")
     endif ()
 endif()
-
-# Qt6 isn't stable, don't make it look like it is.
-if(BRANDING STREQUAL "default" AND BUILD_WITH_QT6)
-    set(BRANDING "Beta")
-endif()
-
 message(STATUS "Branding selected: ${BRANDING}")
 
 include(MacroJPEG)
@@ -678,6 +655,8 @@ option(KRITA_QT_HAS_UPDATE_COMPRESSION_PATCH "Qt has a custom patch for limiting
 add_feature_info("Qt: Compressed updates patch" KRITA_QT_HAS_UPDATE_COMPRESSION_PATCH "Krita will compress the screen updates to the maximum FPS of available displays")
 
 
+configure_file(config-qt-patches-present.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-qt-patches-present.h)
+
 #
 # Check for the presence the Wintab switch in Qt5
 #
@@ -805,15 +784,6 @@ KRITA_QT_HAS_ANDROID_IGNORE_HISTORIC_TABLET_EVENTS
 )
 
 CHECK_CXX_SOURCE_COMPILES("
-#include <QCoreApplication>
-int main(int argc, char *argv[]) {
-QCoreApplication::setKritaAttribute(KRITA_QATTRIBUTE_ANDROID_EMULATE_MOUSE_BUTTONS_FOR_HIGH_FUNCTION_KEYS);
-}
-"
-KRITA_QT_HAS_ANDROID_EMULATE_MOUSE_BUTTONS_FOR_HIGH_FUNCTION_KEYS
-)
-
-CHECK_CXX_SOURCE_COMPILES("
 #include <QScroller>
 #ifndef KRITA_QSCROLLER_PATCH
 #error \"QScroller filter patch not present\"
@@ -822,17 +792,6 @@ int main(int argc, char *argv[]) {}
 "
 KRITA_QT_HAS_QSCROLLER_FILTER
 )
-
-CHECK_CXX_SOURCE_COMPILES("
-#include <QCoreApplication>
-int main(int argc, char *argv[]) {
-return Qt::ANDROID_INPUT_PLATFORM_DATA_SOFT_INPUT_ADJUST_NOTHING;
-}
-"
-KRITA_QT_HAS_ANDROID_INPUT_PLATFORM_DATA_SOFT_INPUT_ADJUST_NOTHING
-)
-
-configure_file(config-qt-patches-present.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-qt-patches-present.h)
 
 unset(CMAKE_REQUIRED_INCLUDES)
 unset(CMAKE_REQUIRED_LIBRARIES)
