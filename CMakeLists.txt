@@ -137,11 +137,7 @@ set(KRITA_STABLE_VERSION_MINOR 0)
 else()
 # define common versions of Krita applications, used to generate kritaversion.h
 # update these version for every release:
-<<<<<<< HEAD
 set(KRITA_VERSION_STRING "5.3.1")
-=======
-set(KRITA_VERSION_STRING "5.2.0-beta2")
->>>>>>> e56351c226 (Update version to 5.2.0-beta2)
 # Major version: 3 for 3.x, 4 for 4.x, etc.
 set(KRITA_STABLE_VERSION_MAJOR 5)
 # Minor version: 0 for 4.0, 1 for 4.1, etc.
@@ -154,11 +150,7 @@ set(KRITA_VERSION_RELEASE 1)
 # - [Pre-]Alpha: Starts from 0, increment 1 per release
 # - Beta: Starts from 50, increment 1 per release
 # - Stable: Set to 100, bump to 101 if emergency update is needed
-<<<<<<< HEAD
 set(KRITA_VERSION_REVISION 100)
-=======
-set(KRITA_VERSION_REVISION 51)
->>>>>>> e56351c226 (Update version to 5.2.0-beta2)
 # Uncomment the following if this is currently in the "stable" branch.
 # Do not uncomment for master branch.
 #set(KRITA_STABLE_BRANCH 1)
@@ -770,18 +762,6 @@ QWindowsWindowFunctions::setHasBorderInFullScreenDefault(true);
     )
     configure_file(config-set-has-border-in-full-screen-default.h.in ${CMAKE_CURRENT_BINARY_DIR}/config-set-has-border-in-full-screen-default.h)
 
-<<<<<<< HEAD
-=======
-    CHECK_CXX_SOURCE_COMPILES("
-#include <QtPlatformHeaders/QWindowsWindowFunctions>
-int main(int argc, char *argv[]) {
-QWindowsWindowFunctions::requestPossibleKeys(nullptr);
-}
-"
-    HAVE_REQUEST_POSSIBLE_KEYS
-    )
-    configure_file(config-request-possible-keys.h.in ${CMAKE_CURRENT_BINARY_DIR}/config-request-possible-keys.h)
->>>>>>> dd6ce91bcc (Fix shortcuts editor to handle Ctrl+Alt-based keys on Windows)
 endif (WIN32)
 
 

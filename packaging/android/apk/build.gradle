@@ -192,11 +192,8 @@ android {
      * (including alpha and beta) release of versionMajor.versionMinor
      * branch
      */
-<<<<<<< HEAD
     def versionRelease  = 4 // 5.3.1 was released with version '4', increment on releasing
-=======
-    def versionRelease  = 21
->>>>>>> e56351c226 (Update version to 5.2.0-beta2)
+
 
     defaultConfig {
         compileSdk androidCompileSdkVersion.toInteger()
@@ -211,7 +208,6 @@ android {
         targetSdkVersion 35
         minSdkVersion 24
         versionCode project.ext.constant * 1000000 + versionMajor * 10000 + versionMinor * 100 + versionRelease
-<<<<<<< HEAD
         versionName "5.3.1"
         def unstableSuffix = System.getenv('KRITA_UNSTABLE_PACKAGE_SUFFIX')
         archivesBaseName = System.getenv('KRITA_BUILD_APPBUNDLE') ? "krita-$versionName$unstableSuffix" : "krita-$abi-$versionName$unstableSuffix"
@@ -219,10 +215,7 @@ android {
     buildFeatures {
         renderScript true
         aidl true
-=======
-        versionName "5.2.0-beta2"
-        archivesBaseName = System.getenv('KRITA_BUILD_APPBUNDLE') ? "krita-$versionName" : "krita-$abi-$versionName"
->>>>>>> e56351c226 (Update version to 5.2.0-beta2)
+
     }
 
     // This is needed because, gradle by default ignores hidden assets.
