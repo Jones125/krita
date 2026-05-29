@@ -169,4 +169,4 @@ KoColor TestKisSwatchGroup::red()
 }
 
 
-SIMPLE_TEST_MAIN(TestKisSwatchGroup)
+QTEST_GUILESS_MAIN(TestKisSwatchGroup)

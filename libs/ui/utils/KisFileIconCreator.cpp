@@ -110,7 +110,9 @@ bool KisFileIconCreator::createFileIcon(QString path, QIcon &icon, qreal deviceP
                     QByteArray bytes = store->read(store->size());
                     store->close();
                     QImage img;
-                    img.loadFromData(bytes);
+                    if (!img.loadFromData(bytes) || img.isNull()) {
+                        return false;
+                    }
 
                     icon = createIcon(img, iconSize);
                     return true;

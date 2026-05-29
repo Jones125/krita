@@ -87,9 +87,7 @@ Q_SIGNALS:
 
     void entryColorSelectedEntry(const QModelIndex &);
 private Q_SLOTS:
-
-    void fgSelected(KisSwatch swatch);
-    void bgSelected(KisSwatch swatch);
+    void fgSelected(QModelIndex index);
     void colorSelected(const KoColor & color);
     void colorSelectedEntry(const QModelIndex &);
 

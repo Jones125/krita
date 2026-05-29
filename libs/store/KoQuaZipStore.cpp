@@ -71,11 +71,15 @@ KoQuaZipStore::~KoQuaZipStore()
         finalize();
     }
 
-    delete dd->archive;
-
+    // QuaZipFile's destructor calls close(), which dereferences its parent
+    // QuaZip — so the file must be deleted before the archive.
     if (dd->currentFile) {
         delete dd->currentFile;
+        dd->currentFile = nullptr;
     }
+
+    delete dd->archive;
+    dd->archive = nullptr;
 }
 
 void KoQuaZipStore::setCompressionEnabled(bool enabled)

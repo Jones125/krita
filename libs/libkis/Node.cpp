@@ -939,7 +939,7 @@ void Node::refreshNode()
 {
     if (image() == 0 || node() == 0) return;
 
-    image()->refreshGraphAsync(node(), KisImage::NoFilthyUpdate);;
+    image()->refreshGraphAsync(node(), KisProjectionUpdateFlag::NoFilthy);;
 }
 
 void Node::flattenNode() {

@@ -26,7 +26,6 @@
 #include <QtGui/private/qkeymapper_p.h>
 
 
-
 uint qHash(const QKeySequence &seq)
 {
     return qHash(seq.toString());

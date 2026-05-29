@@ -161,7 +161,13 @@ android {
             renderscript.srcDirs = ['src']
             assets.srcDirs = ['assets']
             jniLibs.srcDirs = ['libs', 'lib']
-       }
+        }
+        nightly {
+            manifest.srcFile 'flavors/next/AndroidManifest.xml'
+        }
+        debug {
+            manifest.srcFile 'flavors/debug/AndroidManifest.xml'
+        }
     }
 
     buildTypes {
@@ -194,7 +200,6 @@ android {
      */
     def versionRelease  = 4 // 5.3.1 was released with version '4', increment on releasing
 
-
     defaultConfig {
         compileSdk androidCompileSdkVersion.toInteger()
 
@@ -215,7 +220,6 @@ android {
     buildFeatures {
         renderScript true
         aidl true
-
     }
 
     // This is needed because, gradle by default ignores hidden assets.
