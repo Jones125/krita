@@ -200,9 +200,9 @@ mkdir $BUILD_PREFIX/krita-apprun-build
 rm -rf $BUILD_PREFIX/krita-apprun-build
 
 if [ -d $APPDIR/usr/lib/$PYTHON_VER/site-packages ]; then
-    rm -rf $APPDIR/usr/lib/$PYTHON_VER/site-packages/packaging*
+ #   rm -rf $APPDIR/usr/lib/$PYTHON_VER/site-packages/packaging*
     rm -rf $APPDIR/usr/lib/$PYTHON_VER/site-packages/pip*
-    rm -rf $APPDIR/usr/lib/$PYTHON_VER/site-packages/pyparsing*
+#    rm -rf $APPDIR/usr/lib/$PYTHON_VER/site-packages/pyparsing*
     rm -rf $APPDIR/usr/lib/$PYTHON_VER/site-packages/PyQt_builder*
     rm -rf $APPDIR/usr/lib/$PYTHON_VER/site-packages/setuptools*
     rm -rf $APPDIR/usr/lib/$PYTHON_VER/site-packages/sip*
